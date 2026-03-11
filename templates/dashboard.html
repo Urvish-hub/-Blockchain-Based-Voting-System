@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Online Voting System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Welcome, {{ user.full_name }}!</h2>
+        <p style="color: var(--text-light); margin-top: 0.5rem;">Manage your account and voting activities</p>
+    </div>
+    
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-value">{{ '✓' if user.has_voted else '✗' }}</div>
+            <div class="stat-label">Vote Status</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ stats.total_votes if stats else 0 }}</div>
+            <div class="stat-label">Total Votes</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ user.username }}</div>
+            <div class="stat-label">Username</div>
+        </div>
+        {% if stats and stats.account_created %}
+        <div class="stat-card">
+            <div class="stat-value">{{ stats.account_created.strftime('%Y') }}</div>
+            <div class="stat-label">Member Since</div>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if user.has_voted %}
+        <div class="alert alert-success">
+            <strong>✓ You have already voted!</strong> Thank you for participating in the election.
+        </div>
+        {% if latest_vote %}
+        <div class="alert alert-info" style="margin-top: 1rem;">
+            <strong>Last Vote:</strong> You voted for <strong>{{ latest_vote.candidate_name }}</strong> 
+            ({{ latest_vote.position }}) on 
+            {% if latest_vote.voted_at %}
+                {{ latest_vote.voted_at.strftime('%B %d, %Y at %I:%M %p') }}
+            {% endif %}
+        </div>
+        {% endif %}
+        <div style="text-align: center; margin-top: 2rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <a href="{{ url_for('vote.download_receipt') }}" class="btn btn-secondary">
+                📄 Download Receipt
+            </a>
+            <a href="{{ url_for('vote.results') }}" class="btn btn-primary">View Results</a>
+            <a href="{{ url_for('user.vote_history') }}" class="btn btn-outline">Vote History</a>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <strong>You haven't voted yet.</strong> Click the button below to cast your vote.
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="{{ url_for('vote.vote_page') }}" class="btn btn-primary btn-lg">Cast Your Vote</a>
+        </div>
+    {% endif %}
+</div>
+
+
+<div class="card">
+    <div class="card-header">
+        <h2>Quick Actions</h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+        <a href="{{ url_for('user.profile') }}" class="btn btn-outline" style="padding: 1.5rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 2rem;">👤</span>
+            <span>Edit Profile</span>
+        </a>
+        <a href="{{ url_for('user.settings') }}" class="btn btn-outline" style="padding: 1.5rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 2rem;">⚙️</span>
+            <span>Account Settings</span>
+        </a>
+        <a href="{{ url_for('user.vote_history') }}" class="btn btn-outline" style="padding: 1.5rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 2rem;">📊</span>
+            <span>Vote History</span>
+        </a>
+        {% if user.has_voted %}
+        <a href="{{ url_for('vote.download_receipt') }}" class="btn btn-outline" style="padding: 1.5rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+            <span style="font-size: 2rem;">📄</span>
+            <span>Download Receipt</span>
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2>Your Information</h2>
+    </div>
+    <table>
+        <tr>
+            <th>Full Name</th>
+            <td>{{ user.full_name }}</td>
+        </tr>
+        <tr>
+            <th>Username</th>
+            <td>{{ user.username }}</td>
+        </tr>
+        <tr>
+            <th>Email</th>
+            <td>{{ user.email }}</td>
+        </tr>
+        <tr>
+            <th>User ID</th>
+            <td>V{{ "%06d"|format(user.id) }}</td>
+        </tr>
+        <tr>
+            <th>Vote Status</th>
+            <td>
+                {% if user.has_voted %}
+                    <span style="color: var(--secondary-color); font-weight: bold;">✓ Voted</span>
+                {% else %}
+                    <span style="color: var(--warning-color); font-weight: bold;">✗ Not Voted</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% if stats and stats.account_created %}
+        <tr>
+            <th>Member Since</th>
+            <td>{{ stats.account_created.strftime('%B %d, %Y') }}</td>
+        </tr>
+        {% endif %}
+    </table>
+</div>
+{% endblock %}
+

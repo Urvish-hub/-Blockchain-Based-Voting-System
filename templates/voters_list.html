@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Voters List - Online Voting System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Registered Voters</h2>
+    </div>
+
+    {% if voters %}
+        <div class="stats-grid" style="margin-bottom: 2rem;">
+            <div class="stat-card">
+                <div class="stat-value">{{ total_voters }}</div>
+                <div class="stat-label">Total Voters</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ voted_count }}</div>
+                <div class="stat-label">Voted</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">{{ not_voted_count }}</div>
+                <div class="stat-label">Not Voted</div>
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Full Name</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Vote Status</th>
+                        <th>Registered</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for voter in voters %}
+                    <tr>
+                        <td>{{ voter.id }}</td>
+                        <td><strong>{{ voter.full_name }}</strong></td>
+                        <td>{{ voter.username }}</td>
+                        <td>{{ voter.email }}</td>
+                        <td>
+                            {% if voter.has_voted %}
+                                <span style="color: var(--secondary-color); font-weight: bold;">✓ Voted</span>
+                            {% else %}
+                                <span style="color: var(--warning-color); font-weight: bold;">✗ Not Voted</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ voter.created_at.strftime('%Y-%m-%d') if voter.created_at else 'N/A' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <strong>No voters registered yet.</strong>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+

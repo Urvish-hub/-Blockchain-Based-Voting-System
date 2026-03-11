@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Results - Online Voting System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Election Results</h2>
+        <p style="color: var(--text-light); margin-top: 0.5rem;">Total Votes Cast: <strong>{{ total_votes }}</strong></p>
+    </div>
+
+    {% if results_by_position %}
+        <div class="results-container">
+            {% for position, candidates in results_by_position.items() %}
+                <div class="position-group">
+                    <h3 class="position-title">{{ position }}</h3>
+                    
+                    {% set max_votes = candidates[0].vote_count if candidates else 0 %}
+                    
+                    {% for candidate in candidates %}
+                        <div class="result-item {% if candidate.vote_count == max_votes and max_votes > 0 %}winner{% endif %}">
+                            <div>
+                                <strong style="font-size: 1.2rem;">{{ candidate.name }}</strong>
+                                <div style="color: var(--text-light); margin-top: 0.25rem;">
+                                    {{ candidate.party }}
+                                </div>
+                            </div>
+                            <div class="vote-count">
+                                {{ candidate.vote_count }} {% if candidate.vote_count == 1 %}vote{% else %}votes{% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <strong>No results available yet.</strong> Votes are still being cast.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+

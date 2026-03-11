@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Account Settings - Online Voting System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Change Password</h2>
+        <p style="color: var(--text-light); margin-top: 0.5rem;">Update your account password</p>
+    </div>
+    
+    <form method="POST" action="{{ url_for('user.settings') }}">
+        <div class="form-group">
+            <label for="old_password">Current Password</label>
+            <input type="password" id="old_password" name="old_password" class="form-control" 
+                   required placeholder="Enter your current password">
+        </div>
+        
+        <div class="form-group">
+            <label for="new_password">New Password</label>
+            <input type="password" id="new_password" name="new_password" class="form-control" 
+                   required placeholder="Enter your new password" minlength="6">
+            <small style="color: var(--text-light); font-size: 0.875rem;">Password must be at least 6 characters long</small>
+        </div>
+        
+        <div class="form-group">
+            <label for="confirm_password">Confirm New Password</label>
+            <input type="password" id="confirm_password" name="confirm_password" class="form-control" 
+                   required placeholder="Confirm your new password" minlength="6">
+        </div>
+        
+        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+            <button type="submit" class="btn btn-primary">Change Password</button>
+            <a href="{{ url_for('user.dashboard') }}" class="btn btn-outline">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2>Security Tips</h2>
+    </div>
+    <ul style="list-style: none; padding: 0;">
+        <li style="padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);">
+            🔒 Use a strong password with a mix of letters, numbers, and symbols
+        </li>
+        <li style="padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);">
+            🔒 Never share your password with anyone
+        </li>
+        <li style="padding: 0.75rem 0; border-bottom: 1px solid var(--border-color);">
+            🔒 Change your password regularly
+        </li>
+        <li style="padding: 0.75rem 0;">
+            🔒 Log out when using a shared computer
+        </li>
+    </ul>
+</div>
+{% endblock %}
+

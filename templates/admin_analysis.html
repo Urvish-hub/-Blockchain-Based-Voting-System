@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Analysis - Online Voting System{% endblock %}
+
+{% block page_title %}Analysis & Charts{% endblock %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-header">
+        <h2>Analysis & Live Insights</h2>
+    </div>
+
+    <div class="analysis-kpis">
+        <div class="kpi">
+            <div class="kpi-value">{{ total_votes }}</div>
+            <div class="kpi-label">Total Votes</div>
+        </div>
+        <div class="kpi">
+            <div class="kpi-value">{{ total_voters }}</div>
+            <div class="kpi-label">Registered Voters</div>
+        </div>
+        <div class="kpi">
+            <div class="kpi-value">{{ voted_count }}</div>
+            <div class="kpi-label">Voters Who Voted</div>
+        </div>
+        <div class="kpi">
+            <div class="kpi-value">{% if total_voters>0 %}{{ "%.1f"|format((voted_count/total_voters*100)) }}%{% else %}0%{% endif %}</div>
+            <div class="kpi-label">Turnout</div>
+        </div>
+    </div>
+
+    <div class="analysis-grid">
+        <div class="chart-card">
+            <h3 class="chart-title">Live Vote Counts</h3>
+            <canvas id="votesChart"></canvas>
+        </div>
+
+        <aside class="right-pane">
+            <div class="chart-card small">
+                <h3 class="chart-title">Voter Turnout</h3>
+                <canvas id="turnoutChart"></canvas>
+                <div class="turnout-summary">
+                    <div>Total Voters: <strong id="totalVoters">{{ total_voters }}</strong></div>
+                    <div>Votes Cast: <strong id="votedCount">{{ voted_count }}</strong></div>
+                </div>
+            </div>
+
+            <div class="chart-card candidates">
+                <h3 class="chart-title">Candidates Breakdown</h3>
+                <div class="candidate-list">
+                    {% for c in candidates %}
+                    <div class="candidate-row" data-candidate-id="{{ c.id }}">
+                        <div class="candidate-info">
+                            <div class="candidate-avatar">
+                                {% if c.image_path %}
+                                <img src="{{ url_for('static', filename=c.image_path) }}" alt="{{ c.name }}">
+                                {% else %}
+                                <div class="avatar-fallback">{{ c.name[0]|upper }}</div>
+                                {% endif %}
+                            </div>
+                            <div class="candidate-meta">
+                                <div class="candidate-name">{{ c.name }}</div>
+                                <div class="candidate-position">{{ c.position }} • {{ c.party }}</div>
+                            </div>
+                        </div>
+                        <div class="candidate-stats">
+                            <div class="votes-count">{{ c.vote_count }}</div>
+                            <div class="progress-bar"><div class="progress-fill" style="width:0%"></div></div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </aside>
+    </div>
+
+</div>
+
+<!-- Chart.js CDN and admin script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    window.CANDIDATES = {{ candidates|tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/admin_analysis.js') }}"></script>
+
+{% endblock %}

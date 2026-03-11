@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Vote - Online Voting System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Cast Your Vote</h2>
+        <p style="color: var(--text-light); margin-top: 0.5rem;">Select your preferred candidate and click "Submit Vote"</p>
+        <div class="alert alert-info" style="margin-top: 1.5rem; margin-bottom: 0;">
+            <strong>📄 Receipt:</strong> After voting, you will receive a PDF receipt that you can download from your dashboard.
+        </div>
+    </div>
+
+    {% if candidates %}
+        <form id="vote-form">
+            <input type="hidden" id="selected-candidate" name="candidate_id" value="">
+            
+            <div class="candidates-grid">
+                {% for candidate in candidates %}
+                <div class="candidate-card" data-candidate-id="{{ candidate.id }}">
+                    {% if candidate.image_path %}
+                        <img src="{{ candidate.image_path }}" alt="{{ candidate.name }}" class="candidate-image">
+                    {% else %}
+                        <div class="candidate-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                            👤
+                        </div>
+                    {% endif %}
+                    <div class="candidate-name">{{ candidate.name }}</div>
+                    <div class="candidate-party">{{ candidate.party }}</div>
+                    <div class="candidate-position">{{ candidate.position }}</div>
+                    {% if candidate.bio %}
+                        <div class="candidate-bio">{{ candidate.bio }}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <div style="text-align: center; margin-top: 2rem;">
+                <button type="submit" class="btn btn-primary btn-lg">Submit Vote</button>
+            </div>
+        </form>
+    {% else %}
+        <div class="alert alert-info">
+            <strong>No candidates available.</strong> Please check back later.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+

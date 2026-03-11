@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Online Voting System{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{{ url_for('user.index') }}" class="logo"> Voting System</a>
+            <ul class="nav-links">
+                {% if session.user_id %}
+                    <li><a href="{{ url_for('user.dashboard') }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('vote.vote_page') }}">Vote</a></li>
+                    <li><a href="{{ url_for('vote.results') }}">Results</a></li>
+                    <li><a href="{{ url_for('user.profile') }}">Profile</a></li>
+                    <li><a href="{{ url_for('user.logout') }}">Logout</a></li>
+                {% elif session.admin_id %}
+                    <li><a href="{{ url_for('admin.admin_dashboard') }}">Admin Dashboard</a></li>
+                    <li><a href="{{ url_for('admin.manage_candidates') }}">Candidates</a></li>
+                    <li><a href="{{ url_for('admin.voters_list') }}">Voters</a></li>
+                    <li><a href="{{ url_for('admin.admin_logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('user.index') }}">Home</a></li>
+                    <li><a href="{{ url_for('user.login') }}">Login</a></li>
+                    <li><a href="{{ url_for('user.register') }}">Register</a></li>
+                    <li><a href="{{ url_for('admin.admin_login') }}">Admin</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="{{ url_for('static', filename='js/vote.js') }}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
+

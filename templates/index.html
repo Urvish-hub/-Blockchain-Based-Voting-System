@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}
+Home - Online Voting System
+{% endblock %}
+
+{% block content %}
+
+<!-- ================= HERO SECTION ================= -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>Welcome to Online Voting System</h1>
+        <p>Cast your vote securely and easily from anywhere</p>
+
+        <div class="hero-buttons">
+            <a href="{{ url_for('user.register') }}" class="btn btn-primary">
+                Register Now
+            </a>
+            <a href="{{ url_for('user.login') }}" class="btn btn-outline">
+                Login
+            </a>
+            <a href="{{ url_for('vote.results') }}" class="btn btn-secondary">
+                View Results
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- ================= HOW IT WORKS ================= -->
+<section class="card">
+    <div class="card-header">
+        <h2>How It Works</h2>
+    </div>
+
+    <div class="steps-grid">
+        <div class="step">
+            <h3>1. Register</h3>
+            <p>Create your account with your details to participate in voting.</p>
+        </div>
+
+        <div class="step">
+            <h3>2. Login</h3>
+            <p>Access your dashboard and see the available candidates.</p>
+        </div>
+
+        <div class="step">
+            <h3>3. Vote</h3>
+            <p>Select your preferred candidate and submit your vote securely.</p>
+        </div>
+
+        <div class="step">
+            <h3>4. Results</h3>
+            <p>View live election results in real time.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ================= FEATURES ================= -->
+<section class="card">
+    <div class="card-header">
+        <h2>Features</h2>
+    </div>
+
+    <ul class="features-list">
+        <li>✅ Secure authentication and voting</li>
+        <li>✅ One vote per registered user</li>
+        <li>✅ Real-time vote counting</li>
+        <li>✅ Transparent result display</li>
+        <li>✅ Admin panel for candidate management</li>
+    </ul>
+</section>
+
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Register - Online Voting System{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 3rem auto;">
+    <div class="card">
+        <div class="card-header">
+            <h2>Voter Registration</h2>
+        </div>
+        <form method="POST" action="{{ url_for('user.register') }}">
+            <div class="form-group">
+                <label for="full_name">Full Name</label>
+                <input type="text" id="full_name" name="full_name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Register</button>
+        </form>
+        <div style="text-align: center; margin-top: 1.5rem;">
+            <p>Already have an account? <a href="{{ url_for('user.login') }}">Login here</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

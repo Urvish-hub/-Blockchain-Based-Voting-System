@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Candidate - Online Voting System{% endblock %}
+
+{% block content %}
+<div style="max-width: 600px; margin: 2rem auto;">
+    <div class="card">
+        <div class="card-header">
+            <h2>Edit Candidate</h2>
+        </div>
+        <form method="POST" action="{{ url_for('admin.edit_candidate', candidate_id=candidate.id) }}">
+            <div class="form-group">
+                <label for="name">Candidate Name *</label>
+                <input type="text" id="name" name="name" class="form-control" 
+                       value="{{ candidate.name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="party">Party/Organization *</label>
+                <input type="text" id="party" name="party" class="form-control" 
+                       value="{{ candidate.party }}" required>
+            </div>
+            <div class="form-group">
+                <label for="position">Position *</label>
+                <input type="text" id="position" name="position" class="form-control" 
+                       value="{{ candidate.position }}" required>
+            </div>
+            <div class="form-group">
+                <label for="bio">Biography (Optional)</label>
+                <textarea id="bio" name="bio" class="form-control" rows="4">{{ candidate.bio or '' }}</textarea>
+            </div>
+            <div style="display: flex; gap: 1rem;">
+                <button type="submit" class="btn btn-primary">Update Candidate</button>
+                <a href="{{ url_for('admin.manage_candidates') }}" class="btn btn-outline">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

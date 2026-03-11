@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Online Voting System{% endblock %}
+
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="dashboard-container">
+
+   <aside class="sidebar">
+    <h3>Quick Actions</h3>
+    <div class="sidebar-links-container">
+        <a href="{{ url_for('admin.add_candidate') }}" class="sidebar-link slide-in" target="">
+            <span class="emoji">➕</span>
+            <span class="link-text">Add Candidate</span>
+        </a>
+        <a href="{{ url_for('admin.manage_candidates') }}" class="sidebar-link slide-in" >
+            <span class="emoji">👥</span>
+            <span class="link-text">Manage Candidates</span>
+        </a>
+        <a href="{{ url_for('admin.voters_list') }}" class="sidebar-link slide-in " >
+            <span class="emoji">👤</span>
+            <span class="link-text">View Voters</span>
+        </a>
+        <a href="{{ url_for('admin.admin_analysis') }}" class="sidebar-link slide-in " >
+            <span class="emoji">📊</span>
+            <span class="link-text">Analysis & Charts</span>
+        </a>
+        <a href="{{ url_for('vote.results') }}" class="sidebar-link slide-in" >
+            <span class="emoji">📈</span>
+            <span class="link-text">View Results</span>
+        </a>
+    </div>
+    
+    <!-- Optional Logout Button -->
+    <div class="sidebar-footer">
+        <a href="{{ url_for('user.logout') }}">
+        <button class="logout-btn">
+            <span class="emoji">🚪</span>
+            Logout
+        </button></a>
+    </div>
+</aside>
+
+    <!-- =========== Main Dashboard =========== -->
+    <section class="main-content">
+
+        <div class="card">
+            <div class="card-header">
+                <h2>System Overview</h2>
+                <p style="color: var(--text-light); margin-top: 0.5rem;">
+                    Welcome back, {{ session.admin_username }}!
+                </p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">{{ candidates|length }}</div>
+                    <div class="stat-label">Total Candidates</div>
+                    <div class="stat-icon">👥</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ total_voters }}</div>
+                    <div class="stat-label">Total Voters</div>
+                    <div class="stat-icon">👤</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ voted_count }}</div>
+                    <div class="stat-label">Votes Cast</div>
+                    <div class="stat-icon">✅</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">
+                        {% if total_voters > 0 %}
+                            {{ "%.1f"|format((voted_count / total_voters * 100)) }}%
+                        {% else %}
+                            0%
+                        {% endif %}
+                    </div>
+                    <div class="stat-label">Voter Turnout</div>
+                    <div class="stat-icon">📊</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>Recent Candidates</h2>
+                <a href="{{ url_for('admin.add_candidate') }}" class="btn btn-primary btn-sm">Add New</a>
+            </div>
+
+            {% if candidates %}
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Party</th>
+                                <th>Position</th>
+                                <th>Votes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for candidate in candidates[:5] %}
+                            <tr>
+                                <td>{{ candidate.name }}</td>
+                                <td>{{ candidate.party }}</td>
+                                <td>{{ candidate.position }}</td>
+                                <td><strong>{{ candidate.vote_count }}</strong></td>
+                                <td>
+                                    <a href="{{ url_for('admin.edit_candidate', candidate_id=candidate.id) }}" class="btn btn-outline btn-sm">Edit</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% if candidates|length > 5 %}
+                <div style="text-align:center;margin-top:1rem;">
+                    <a href="{{ url_for('admin.manage_candidates') }}" class="btn btn-outline">View All Candidates</a>
+                </div>
+                {% endif %}
+
+            {% else %}
+                <div class="alert alert-info">
+                    <strong>No candidates added yet.</strong>
+                    <a href="{{ url_for('admin.add_candidate') }}" class="btn btn-primary btn-sm">Add your first candidate</a>
+                </div>
+            {% endif %}
+        </div>
+
+        
+
+    </section>
+</div>
+
+{% endblock %}

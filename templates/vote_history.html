@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Vote History - Online Voting System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h2>Vote History</h2>
+        <p style="color: var(--text-light); margin-top: 0.5rem;">View your voting activity and history</p>
+    </div>
+    
+    <div class="stats-grid" style="margin-bottom: 2rem;">
+        <div class="stat-card">
+            <div class="stat-value">{{ stats.total_votes }}</div>
+            <div class="stat-label">Total Votes</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">
+                {% if stats.account_created %}
+                    {{ stats.account_created.strftime('%Y') }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </div>
+            <div class="stat-label">Account Created</div>
+        </div>
+    </div>
+    
+    {% if vote_history %}
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Vote ID</th>
+                        <th>Date & Time</th>
+                        <th>Candidate</th>
+                        <th>Party</th>
+                        <th>Position</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vote in vote_history %}
+                    <tr>
+                        <td>VOTE-{{ "%06d"|format(vote.vote_id) }}</td>
+                        <td>
+                            {% if vote.voted_at %}
+                                {{ vote.voted_at.strftime('%B %d, %Y at %I:%M %p') }}
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </td>
+                        <td><strong>{{ vote.candidate_name }}</strong></td>
+                        <td>{{ vote.party or 'Independent' }}</td>
+                        <td>{{ vote.position }}</td>
+                        <td>
+                            <a href="{{ url_for('vote.download_receipt') }}" class="btn btn-outline" 
+                               style="padding: 6px 12px; font-size: 0.85rem;">📄 Receipt</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="alert alert-info">
+            <strong>No vote history found.</strong> You haven't cast any votes yet.
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="{{ url_for('vote.vote_page') }}" class="btn btn-primary">Cast Your Vote</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
