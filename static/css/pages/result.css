@@ -1,2 +1,127 @@
-/* Page-specific styles for Result */
-/* Most layout & form styles are inherited directly from base.css (.card, .form-control, .btn) */
+/* ====== ROOT VARIABLES (Light Modern Theme) ====== */
+:root {
+    --primary: #4f46e5;
+    --primary-light: #eef2ff;
+    --success: #16a34a;
+    --danger: #dc2626;
+    --bg: #f9fafb;
+    --card-bg: #ffffff;
+    --text-dark: #111827;
+    --text-light: #6b7280;
+    --border: #e5e7eb;
+    --shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    --radius: 12px;
+}
+
+/* ====== PAGE ====== */
+body {
+    background: var(--bg);
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    color: var(--text-dark);
+}
+
+/* ====== CARD ====== */
+.card {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 2rem;
+    box-shadow: var(--shadow);
+    max-width: 900px;
+    margin: 2rem auto;
+    border: 1px solid var(--border);
+}
+
+/* ====== HEADER ====== */
+.card-header h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: var(--primary);
+}
+
+.card-header p {
+    font-size: 0.95rem;
+}
+
+/* ====== POSITION GROUP ====== */
+.position-group {
+    margin-top: 2rem;
+}
+
+.position-title {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: var(--text-dark);
+    border-left: 5px solid var(--primary);
+    padding-left: 10px;
+}
+
+/* ====== RESULT ITEM ====== */
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    padding: 1rem 1.2rem;
+    border-radius: var(--radius);
+    margin-bottom: 0.8rem;
+    transition: all 0.3s ease;
+}
+
+/* Hover effect */
+.result-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+/* Winner Highlight */
+.result-item.winner {
+    border: 2px solid var(--success);
+    background: #ecfdf5;
+}
+
+/* ====== TEXT ====== */
+.result-item strong {
+    color: var(--text-dark);
+}
+
+.result-item div {
+    font-size: 0.95rem;
+}
+
+/* ====== VOTE COUNT ====== */
+.vote-count {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--primary);
+    background: var(--primary-light);
+    padding: 6px 12px;
+    border-radius: 20px;
+}
+
+/* ====== ALERT ====== */
+.alert {
+    padding: 1rem;
+    border-radius: var(--radius);
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+}
+
+.alert-info {
+    background: #e0f2fe;
+    color: #0369a1;
+    border: 1px solid #bae6fd;
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 768px) {
+    .result-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .vote-count {
+        align-self: flex-end;
+    }
+}
