@@ -79,4 +79,3 @@ Online-Voting-System/
 
 ## License
 This project is for educational purposes.
-
